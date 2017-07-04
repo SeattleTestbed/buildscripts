@@ -1,31 +1,31 @@
 """
 <Program>
-  initialize.py 
-  
+  initialize.py
+
 <Started>
   August 2014.
 
 <Authors>
   Albert Rafetseder
   Chintan Choksi
-  
+
 <Purpose>
   This script does a "git clone" of all the dependent repositories
   of a Seattle component.
 
 <Usage>
-  * Clone the repository you would like to build on your machine, e.g. using 
+  * Clone the repository you would like to build on your machine, e.g. using
       "git clone https://github.com/SeattleTestbed/seash"
-  
+
   * Change into the "scripts" subdirectory
-  
+
   * Run this script: "python initialize.py [-s]"
-  
+
   * The dependencies will be checked out into "../DEPENDENCIES"
-  
-  *"initialize.py" will get the list of dependencies to check-out from
+
+  * "initialize.py" will get the list of dependencies to check-out from
     "config_initialize.txt" file.
-  
+
   * During check-out, if there is a readme file associated with a repository,
     then it will be printed on terminal.  Once this is done, run the build.py
     script to import the necessary files into a desired target folder.  Run
@@ -36,10 +36,10 @@
 
   (1) Save you from re-downloading stuff that you have on your local machine
   (and can copy over via "cp -R" or similar).
-  
+
   (2) Test local modifications that you have in your working copy without
   having to first commit them somewhere and then hack the init config, but
-  
+
   Skip mode does not check whether the repos that exist in "DEPENDENCIES/" are
   complete, in a working state, or are on the branch specified in
   "config_initialize.txt".  Consequently, while skip mode sounds like a good
@@ -48,8 +48,8 @@
   problems) and should be used with extreme care.
 
 <Note>
-  While this file is redistributed with every buildable Seattle repo, 
-  the "master copy" (and thus the most up-to-date version) is kept 
+  While this file is redistributed with every buildable Seattle repo,
+  the "master copy" (and thus the most up-to-date version) is kept
   at: https://github.com/SeattleTestbed/buildscripts
 """
 
@@ -75,12 +75,12 @@ for line in config_file.readlines():
 
   # If we end up here, the line contains a Git URL (+options?) for us to clone
   print "Checking out repo from", line.split()[0], "..."
-  git_process = subprocess.Popen("git clone " + line, cwd = os.getcwd(), shell = True, 
-     stdout = subprocess.PIPE, stderr = subprocess.PIPE )
+  git_process = subprocess.Popen("git clone " + line, cwd = os.getcwd(),
+     shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
   (stdout_data, stderr_data) = git_process.communicate()
 
-  # Git prints all status messages to stderr (!). We check its retval 
-  # to see if it performed correctly, and halt the program (giving debug 
+  # Git prints all status messages to stderr (!). We check its retval
+  # to see if it performed correctly, and halt the program (giving debug
   # output) if not.
   if git_process.returncode == 0:
     print "Done!"
@@ -90,8 +90,8 @@ for line in config_file.readlines():
     print "*** Git messages on stderr: '" + stderr_data + "'."
     print
     if not ignore_git_errors:
-      print """Since the skip-mode is off, these errors need to be fixed before the build process can proceed. In 
-doubt, please contact the Seattle development team at 
+      print """Since the skip-mode is off, these errors need to be fixed before the build process can proceed. In
+doubt, please contact the Seattle development team at
 
    seattle-devel@googlegroups.com
 
@@ -105,7 +105,7 @@ and supply all of the above information. Thank you!
       print
       continue
 
-# If there is a readme file, show it to the user. 
+# If there is a readme file, show it to the user.
 try:
   readme_file = open('README.txt', 'r')
   for line in readme_file.readlines():
